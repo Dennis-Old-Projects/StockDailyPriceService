@@ -11,7 +11,9 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.UriInfo;
 
 import org.springframework.stereotype.Component;
 
@@ -28,6 +30,9 @@ import com.multiplan.stockdaily.rest.resource.StockPrice;
 @Component
 @Path("/stock/daily")
 public class StockDailyPriceRestService {
+	
+	@Context
+	private UriInfo uriInfo;
 	
 	@GET
     @Path("/{ticker}")
@@ -51,6 +56,7 @@ public class StockDailyPriceRestService {
 			StockPrice[] response = new StockPrice[0];
 			response = invocationBuilder.get(response.getClass());			
 			response[0].setTicker(ticker);
+			//response[0].setTicker(uriInfo.getBaseUri().toURL().getProtocol());
 			return response[0];
 		}
 		catch (Throwable ex) {
