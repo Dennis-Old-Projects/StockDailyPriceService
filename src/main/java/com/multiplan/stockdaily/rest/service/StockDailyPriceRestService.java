@@ -48,21 +48,14 @@ public class StockDailyPriceRestService {
 			
 			
 			WebTarget webTarget = client.target("https://api.tiingo.com");
-			WebTarget tiingoStockPriceWebTarget = webTarget.path("/tiingo/daily/WMT/prices");
+			WebTarget tiingoStockPriceWebTarget = webTarget.path("/tiingo/daily/"+ticker+"/prices");
 			Invocation.Builder invocationBuilder  = tiingoStockPriceWebTarget.request(MediaType.APPLICATION_JSON)
 					                                .header("Authorization", "Token 67437b7b696a5ff08541da926f0a8a7d7027bebd")
 					                                .header("Content-Type", "application/json");
 			
 			StockPrice[] response = new StockPrice[0];
-			response = invocationBuilder.get(response.getClass());
-			
-			
-			
-			
-			
-			StockPrice stockPrice = new StockPrice();
-			stockPrice.setTicker(ticker);
-			stockPrice.setAdjClose("84.62");
+			response = invocationBuilder.get(response.getClass());			
+			response[0].setTicker(ticker);
 			return response[0];
 		}
 		catch (Throwable ex) {
