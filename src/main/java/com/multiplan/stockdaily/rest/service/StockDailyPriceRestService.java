@@ -13,6 +13,8 @@ import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
 import org.springframework.stereotype.Component;
@@ -37,7 +39,7 @@ public class StockDailyPriceRestService {
 	@GET
     @Path("/{ticker}")
     @Produces({ MediaType.APPLICATION_JSON })
-	public StockPrice retrieveStockPrice(@PathParam("ticker") String ticker) {
+	public Response retrieveStockPrice(@PathParam("ticker") String ticker) {
 		
 		try {
 			SSLContext sc = SSLContext.getInstance("TLSv1");
@@ -57,14 +59,11 @@ public class StockDailyPriceRestService {
 			response = invocationBuilder.get(response.getClass());			
 			response[0].setTicker(ticker);
 			//response[0].setTicker(uriInfo.getBaseUri().toURL().getProtocol());
-			return response[0];
+			return Response.ok(response[0]).build();
 		}
 		catch (Throwable ex) {
 			ex.printStackTrace();
-			StockPrice stockPrice = new StockPrice();
-			stockPrice.setTicker(ticker);
-			stockPrice.setAdjClose("84.61");
-			return stockPrice;
+			return Response.status(Status.BAD_REQUEST).entity(ex.getMessage()).build();
 		}
 	}
 		
