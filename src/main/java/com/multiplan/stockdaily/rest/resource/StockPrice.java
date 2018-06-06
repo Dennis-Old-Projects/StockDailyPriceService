@@ -1,5 +1,8 @@
 package com.multiplan.stockdaily.rest.resource;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class StockPrice {
 
 	private String adjClose;
