@@ -21,7 +21,7 @@ import com.multiplan.stockdaily.rest.resource.StockPrice;
 
 
 /**
- * API URI : http://{server}:8080/api//stock/daily/WMT
+ * API URI : http://{server}:8080/api/stock/daily/{ticker}
  * @author dennis.chacko
  *
  */
@@ -35,23 +35,18 @@ public class StockDailyPriceRestService {
 	public StockPrice retrieveStockPrice(@PathParam("ticker") String ticker) {
 		
 		try {
-			SSLContext sc = SSLContext.getInstance("TLSv1");//Java 8
-	        System.setProperty("https.protocols", "TLSv1");//Java 8
-	
+			SSLContext sc = SSLContext.getInstance("TLSv1");
+	        System.setProperty("https.protocols", "TLSv1");	
 	
 	        TrustManager[] trustAllCerts = { new InsecureTrustManager() };
 	        sc.init(null, trustAllCerts, new java.security.SecureRandom());
 	        HostnameVerifier allHostsValid = new InsecureHostnameVerifier();
 	        
-			Client client = ClientBuilder.newBuilder().sslContext(sc).hostnameVerifier(allHostsValid).build();
-	
-			
-			
+			Client client = ClientBuilder.newBuilder().sslContext(sc).hostnameVerifier(allHostsValid).build();					
 			WebTarget webTarget = client.target("https://api.tiingo.com");
 			WebTarget tiingoStockPriceWebTarget = webTarget.path("/tiingo/daily/"+ticker+"/prices");
 			Invocation.Builder invocationBuilder  = tiingoStockPriceWebTarget.request(MediaType.APPLICATION_JSON)
-					                                .header("Authorization", "Token 67437b7b696a5ff08541da926f0a8a7d7027bebd")
-					                                .header("Content-Type", "application/json");
+					                                .header("Authorization", "Token 67437b7b696a5ff08541da926f0a8a7d7027bebd");
 			
 			StockPrice[] response = new StockPrice[0];
 			response = invocationBuilder.get(response.getClass());			
