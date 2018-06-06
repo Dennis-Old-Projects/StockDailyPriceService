@@ -152,7 +152,7 @@
 					<repository>services/stockdailypriceservice</repository>
 					<dockerHost>http://173.255.221.238:2375</dockerHost>
 					<buildArgs>
-						<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+						<JAR_FILE>target/${project.build.finalName}.war</JAR_FILE>
 					</buildArgs>
 				</configuration>
 				<executions>
