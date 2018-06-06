@@ -61,6 +61,7 @@ public class StockPriceDailyRestService {
 			response = invocationBuilder.get(response.getClass());			
 			response[0].setTicker(ticker);
 			//response[0].setTicker(uriInfo.getBaseUri().toURL().getProtocol());
+			
 			return Response.ok(response[0]).build();
 		}
 		catch (Throwable ex) {
