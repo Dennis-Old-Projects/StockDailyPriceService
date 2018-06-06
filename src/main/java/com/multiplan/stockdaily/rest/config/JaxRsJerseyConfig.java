@@ -5,7 +5,7 @@ import javax.ws.rs.ApplicationPath;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.stereotype.Component;
 
-import com.multiplan.stockdaily.rest.service.StockDailyPriceRestService;
+import com.multiplan.stockdaily.rest.service.StockPriceDailyRestService;
 
 @Component
 @ApplicationPath("/api")
@@ -18,7 +18,7 @@ public class JaxRsJerseyConfig extends ResourceConfig{
    }
     
    private void registerEndpoints() {
-       register(StockDailyPriceRestService.class);
+       register(StockPriceDailyRestService.class);
    }
 }
 /*
