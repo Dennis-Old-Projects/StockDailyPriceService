@@ -1,5 +1,7 @@
 package com.multiplan.stockdaily.rest.service;
 
+import java.nio.charset.StandardCharsets;
+
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
@@ -19,8 +21,11 @@ import javax.ws.rs.core.UriInfo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.FileCopyUtils;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.multiplan.stockdaily.rest.config.InsecureHostnameVerifier;
 import com.multiplan.stockdaily.rest.config.InsecureTrustManager;
 import com.multiplan.stockdaily.rest.resource.StockPrice;
@@ -70,6 +75,25 @@ public class StockPriceDailyRestService {
 			return Response.ok(response[0]).build(); 
 			
 	       
+		}
+		catch (Throwable ex) {
+			ex.printStackTrace();
+			return Response.status(Status.BAD_REQUEST).entity(ex.getMessage()).build();
+		}
+	}
+	
+	@GET
+    @Path("/command/{command}")
+    @Produces({ MediaType.APPLICATION_JSON })
+	public Response updateStockPrices(@PathParam("command") String command) {
+		try {			
+			ClassPathResource cpr = new ClassPathResource("sp500.json");
+			byte[] bdata = FileCopyUtils.copyToByteArray(cpr.getInputStream());
+			String sp500  = new String(bdata, StandardCharsets.UTF_8);
+		    ObjectMapper mapper = new ObjectMapper();
+		    StockPrice[] response = new StockPrice[0];
+		    response = mapper.readValue(sp500, response.getClass());
+			return Response.ok(response).build();
 		}
 		catch (Throwable ex) {
 			ex.printStackTrace();

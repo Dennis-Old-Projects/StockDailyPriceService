@@ -17,9 +17,10 @@ public class StockPrice {
 	private String low;
 	private String open;
 	private String splitFactor;
-	private String volume;
-	
+	private String volume;	
 	private String ticker;
+	private String name;
+	private String sector;
 	
 	public String getAdjClose() {
 		return adjClose;
@@ -131,6 +132,22 @@ public class StockPrice {
 
 	public void setVolume(String volume) {
 		this.volume = volume;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getSector() {
+		return sector;
+	}
+
+	public void setSector(String sector) {
+		this.sector = sector;
 	}
 	
 	
