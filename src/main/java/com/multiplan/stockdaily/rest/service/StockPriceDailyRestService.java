@@ -17,6 +17,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import com.multiplan.stockdaily.rest.config.InsecureHostnameVerifier;
@@ -33,6 +35,9 @@ import com.multiplan.stockdaily.rest.resource.StockPrice;
 @Path("/stock/daily")
 public class StockPriceDailyRestService {
 	
+	@Autowired
+	private Environment env;
+	
 	@Context
 	private UriInfo uriInfo;
 	
@@ -44,8 +49,8 @@ public class StockPriceDailyRestService {
 		try {
 			SSLContext sc = SSLContext.getInstance("TLSv1");
 	        System.setProperty("https.protocols", "TLSv1");	
-	        String token = System.getProperty("token");
-	
+	        String token = env.getProperty("token");
+	       
 	        TrustManager[] trustAllCerts = { new InsecureTrustManager() };
 	        sc.init(null, trustAllCerts, new java.security.SecureRandom());
 	        HostnameVerifier allHostsValid = new InsecureHostnameVerifier();
@@ -61,8 +66,10 @@ public class StockPriceDailyRestService {
 			response = invocationBuilder.get(response.getClass());			
 			response[0].setTicker(ticker);
 			//response[0].setTicker(uriInfo.getBaseUri().toURL().getProtocol());
+			 
+			return Response.ok(response[0]).build(); 
 			
-			return Response.ok(response[0]).build();
+	       
 		}
 		catch (Throwable ex) {
 			ex.printStackTrace();

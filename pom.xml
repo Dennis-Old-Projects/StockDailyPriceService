@@ -150,10 +150,7 @@
 				<version>1.3.6</version>
 				<configuration>
 					<repository>services/stockdailypriceservice</repository>
-					<dockerHost>${docker.host}</dockerHost>
-					<buildArgs>
-						<JAR_FILE>target/${project.build.finalName}.war</JAR_FILE>
-					</buildArgs>
+					<dockerHost>${docker.host}</dockerHost>					
 				</configuration>
 				<executions>
 					<execution>
