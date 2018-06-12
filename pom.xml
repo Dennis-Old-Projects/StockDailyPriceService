@@ -13,6 +13,8 @@
 		<spring-cloud.version>Finchley.M8</spring-cloud.version>
 		<spring.boot.version>2.0.1.RELEASE</spring.boot.version>
 		<docker.host>http://173.255.221.238:2375</docker.host>
+		<maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
 	</properties>
 
 	<dependencyManagement>

@@ -31,6 +31,7 @@ import com.multiplan.stockdaily.events.StockEventProducer;
 import com.multiplan.stockdaily.rest.config.InsecureHostnameVerifier;
 import com.multiplan.stockdaily.rest.config.InsecureTrustManager;
 import com.multiplan.stockdaily.rest.resource.StockPrice;
+import com.multiplan.stockdaily.rest.util.RestServiceUtils;
 
 
 /**
@@ -57,29 +58,9 @@ public class StockPriceDailyRestService {
 	public Response retrieveStockPrice(@PathParam("ticker") String ticker) {
 		
 		try {
-			SSLContext sc = SSLContext.getInstance("TLSv1");
-	        System.setProperty("https.protocols", "TLSv1");	
-	        String token = env.getProperty("token");
-	       
-	        TrustManager[] trustAllCerts = { new InsecureTrustManager() };
-	        sc.init(null, trustAllCerts, new java.security.SecureRandom());
-	        HostnameVerifier allHostsValid = new InsecureHostnameVerifier();
-	        
-			Client client = ClientBuilder.newBuilder().sslContext(sc).hostnameVerifier(allHostsValid).build();					
-			WebTarget webTarget = client.target("https://api.tiingo.com");
-			WebTarget tiingoStockPriceWebTarget = webTarget.path("/tiingo/daily/"+ticker+"/prices");
-			Invocation.Builder invocationBuilder  = tiingoStockPriceWebTarget.request(MediaType.APPLICATION_JSON)
-					                                .header("Authorization", "Token "+token)
-					                                .header("Content-Type", "application/json");
-			
-			StockPrice[] response = new StockPrice[0];
-			response = invocationBuilder.get(response.getClass());			
-			response[0].setTicker(ticker);
-			//response[0].setTicker(uriInfo.getBaseUri().toURL().getProtocol());
-			 
-			return Response.ok(response[0]).build(); 
-			
-	       
+			String token = env.getProperty("token");
+			StockPrice sp = RestServiceUtils.invokeRestService(ticker, token);
+			return Response.ok(sp).build(); 
 		}
 		catch (Throwable ex) {
 			ex.printStackTrace();
@@ -100,12 +81,10 @@ public class StockPriceDailyRestService {
 		    response = mapper.readValue(sp500, response.getClass());
 		    
 		    for (int i=0; i<= 10; i++) {
-		    	String ticker = response[i].getTicker();
-		    	StockPrice sp = (StockPrice)this.retrieveStockPrice(ticker).getEntity();
-		    	sp.setName(response[i].getName());
-		    	sp.setSector(response[i].getSector());
-		    	stockEventProducer.send(mapper.writeValueAsString(sp));
+		    	response[i].setToken(env.getProperty("token"));
+		    	stockEventProducer.send(mapper.writeValueAsString(response[i]));
 		    }
+		    
 			return Response.ok(response).build();
 		}
 		catch (Throwable ex) {

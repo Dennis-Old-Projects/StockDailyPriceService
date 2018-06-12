@@ -22,6 +22,8 @@ public class StockPrice {
 	private String name;
 	private String sector;
 	
+	private String token;
+	
 	public String getAdjClose() {
 		return adjClose;
 	}
@@ -148,6 +150,14 @@ public class StockPrice {
 
 	public void setSector(String sector) {
 		this.sector = sector;
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	
