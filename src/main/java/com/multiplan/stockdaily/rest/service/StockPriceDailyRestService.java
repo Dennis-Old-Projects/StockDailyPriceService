@@ -1,6 +1,7 @@
 package com.multiplan.stockdaily.rest.service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.Callable;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLContext;
@@ -97,8 +98,13 @@ public class StockPriceDailyRestService {
 		    ObjectMapper mapper = new ObjectMapper();
 		    StockPrice[] response = new StockPrice[0];
 		    response = mapper.readValue(sp500, response.getClass());
-		    for (int i=0; i<= response.length; i++) {
-		    	stockEventProducer.send(mapper.writeValueAsString(response[i]));
+		    
+		    for (int i=0; i<= 10; i++) {
+		    	String ticker = response[i].getTicker();
+		    	StockPrice sp = (StockPrice)this.retrieveStockPrice(ticker).getEntity();
+		    	sp.setName(response[i].getName());
+		    	sp.setSector(response[i].getSector());
+		    	stockEventProducer.send(mapper.writeValueAsString(sp));
 		    }
 			return Response.ok(response).build();
 		}
@@ -106,7 +112,7 @@ public class StockPriceDailyRestService {
 			ex.printStackTrace();
 			return Response.status(Status.BAD_REQUEST).entity(ex.getMessage()).build();
 		}
-	}
+	}		
 		
 }
 
