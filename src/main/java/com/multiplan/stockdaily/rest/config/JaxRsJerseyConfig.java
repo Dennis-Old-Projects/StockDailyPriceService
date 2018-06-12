@@ -13,13 +13,16 @@ import com.multiplan.stockdaily.rest.service.StockPriceDailyRestService;
 
 public class JaxRsJerseyConfig extends ResourceConfig{
 
-	public JaxRsJerseyConfig() {
+  public JaxRsJerseyConfig() {
         registerEndpoints();
    }
     
    private void registerEndpoints() {
        register(StockPriceDailyRestService.class);
    }
+   
+
+   
 }
 /*
 public class JaxRsJerseyConfig extends Application {

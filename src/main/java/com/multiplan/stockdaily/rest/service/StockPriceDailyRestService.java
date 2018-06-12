@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.multiplan.stockdaily.events.StockEventProducer;
 import com.multiplan.stockdaily.rest.config.InsecureHostnameVerifier;
 import com.multiplan.stockdaily.rest.config.InsecureTrustManager;
 import com.multiplan.stockdaily.rest.resource.StockPrice;
@@ -45,6 +46,9 @@ public class StockPriceDailyRestService {
 	
 	@Context
 	private UriInfo uriInfo;
+	
+	@Autowired
+	private StockEventProducer stockEventProducer;
 	
 	@GET
     @Path("/{ticker}")
@@ -93,6 +97,9 @@ public class StockPriceDailyRestService {
 		    ObjectMapper mapper = new ObjectMapper();
 		    StockPrice[] response = new StockPrice[0];
 		    response = mapper.readValue(sp500, response.getClass());
+		    for (int i=0; i<= response.length; i++) {
+		    	stockEventProducer.send(mapper.writeValueAsString(response[i]));
+		    }
 			return Response.ok(response).build();
 		}
 		catch (Throwable ex) {
