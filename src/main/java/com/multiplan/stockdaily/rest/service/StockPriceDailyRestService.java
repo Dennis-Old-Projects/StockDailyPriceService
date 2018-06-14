@@ -1,19 +1,11 @@
 package com.multiplan.stockdaily.rest.service;
 
 import java.nio.charset.StandardCharsets;
-import java.util.concurrent.Callable;
 
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -28,8 +20,6 @@ import org.springframework.util.FileCopyUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.multiplan.stockdaily.events.StockEventProducer;
-import com.multiplan.stockdaily.rest.config.InsecureHostnameVerifier;
-import com.multiplan.stockdaily.rest.config.InsecureTrustManager;
 import com.multiplan.stockdaily.rest.resource.StockPrice;
 import com.multiplan.stockdaily.rest.util.RestServiceUtils;
 
@@ -79,9 +69,20 @@ public class StockPriceDailyRestService {
 		    ObjectMapper mapper = new ObjectMapper();
 		    StockPrice[] response = new StockPrice[0];
 		    response = mapper.readValue(sp500, response.getClass());
+
 		    
-		    for (int i=0; i<= 10; i++) {
-		    	response[i].setToken(env.getProperty("token"));
+		    /*
+		    Arrays.stream(response).forEach(sp ->  {
+		    	try {
+					stockEventProducer.send(mapper.writeValueAsString(sp));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}	
+		    });
+		    */
+		    
+		    for (int i=0; i<= 450; i++) {
+		    	response[i].setId(i+1);
 		    	stockEventProducer.send(mapper.writeValueAsString(response[i]));
 		    }
 		    
@@ -91,6 +92,14 @@ public class StockPriceDailyRestService {
 			ex.printStackTrace();
 			return Response.status(Status.BAD_REQUEST).entity(ex.getMessage()).build();
 		}
+	}
+
+	private void doSomething(ObjectMapper mapper, Boolean sp) {
+		try {
+		stockEventProducer.send(mapper.writeValueAsString(sp));
+} catch (Exception e) {
+		e.printStackTrace();
+}
 	}		
 		
 }

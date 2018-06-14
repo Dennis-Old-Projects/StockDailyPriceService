@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class StockPrice {
 
+	private Integer id;
 	private String adjClose;
 	private String adjHigh;
 	private String adjLow;
@@ -21,8 +22,6 @@ public class StockPrice {
 	private String ticker;
 	private String name;
 	private String sector;
-	
-	private String token;
 	
 	public String getAdjClose() {
 		return adjClose;
@@ -152,12 +151,12 @@ public class StockPrice {
 		this.sector = sector;
 	}
 
-	public String getToken() {
-		return token;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setToken(String token) {
-		this.token = token;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 	
 	
