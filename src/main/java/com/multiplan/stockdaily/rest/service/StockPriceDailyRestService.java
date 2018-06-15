@@ -81,7 +81,7 @@ public class StockPriceDailyRestService {
 		    });
 		    */
 		    
-		    for (int i=0; i<= 450; i++) {
+		    for (int i=0; i<= 10; i++) {
 		    	response[i].setId(i+1);
 		    	stockEventProducer.send(mapper.writeValueAsString(response[i]));
 		    }
