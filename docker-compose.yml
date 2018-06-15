@@ -4,12 +4,3 @@ rabbitmq:
     - "5672:5672" #JMS Port
     - "15672:15672" #Management Port - default user:pass = guest:guest
     
-stockdailypriceservice:
-  image: services/stockdailypriceservice
-  links:
-    - rabbitmq
-  ports:
-    #  local : container expose
-    - "8080:8080"
-  environment:
-    - tokenValue
