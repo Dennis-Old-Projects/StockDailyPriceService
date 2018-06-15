@@ -12,4 +12,4 @@ stockdailypriceservice:
     #  local : container expose
     - "8080:8080"
   environment:
-    -tokenValue
+    - tokenValue
