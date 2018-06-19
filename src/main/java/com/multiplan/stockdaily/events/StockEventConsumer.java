@@ -6,6 +6,8 @@ import java.util.concurrent.Executors;
 
 import javax.persistence.EntityManager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -25,10 +27,16 @@ public class StockEventConsumer {
 	
 	@Autowired
 	private EntityManager em;
+	
 	@Autowired
 	private SecurityService securityService;
 	
-	static private Executor ex = Executors.newFixedThreadPool(10);
+	static private Executor executor = Executors.newFixedThreadPool(10);
+	//@Resource
+	//private ManagedExecutorService executor;
+	//@Autowired
+	//private DefaultManagedTaskExecutor executor;
+	private Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	
     public void receive(String event) {
         
@@ -36,7 +44,7 @@ public class StockEventConsumer {
         
 		try {
 			final StockPrice sp = mapper.readValue(event, StockPrice.class);
-			ex.execute(() -> readStockPrice(mapper, sp));			
+			executor.execute(() -> readStockPrice(mapper, sp));			
 			
 		} catch (Throwable e) {
 			e.printStackTrace();
@@ -51,7 +59,7 @@ public class StockEventConsumer {
      */
 	private void readStockPrice(final ObjectMapper mapper, final StockPrice sp) {
 		try {
-			System.out.println("Recieved "+ mapper.writeValueAsString(sp));
+			LOGGER.info("Recieved "+ mapper.writeValueAsString(sp));
 			
 			StockPrice stockprice = RestServiceUtils.invokeRestService(sp.getTicker(), env.getProperty("token"));
 			Security security = new Security();
@@ -70,7 +78,7 @@ public class StockEventConsumer {
 			price.setSecurity(security);
 			security.getSecurityPrices().add(price);
 			
-			System.out.println("securityType id "+ securityType.getId());
+			LOGGER.info("securityType id "+ securityType.getId());
 			securityService.saveSecurity(security);
 			
 		} catch (Throwable e) {

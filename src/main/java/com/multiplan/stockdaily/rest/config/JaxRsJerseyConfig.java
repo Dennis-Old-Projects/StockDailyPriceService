@@ -20,25 +20,5 @@ public class JaxRsJerseyConfig extends ResourceConfig{
    private void registerEndpoints() {
        register(StockPriceDailyRestService.class);
    }
-   
-
-   
+     
 }
-/*
-public class JaxRsJerseyConfig extends Application {
-	@Override
-    public Set<Class<?>> getClasses() {
-        final Set<Class<?>> classes = new HashSet<Class<?>>();
-        classes.add(CatalogRestService.class);
-        return classes;
-    }
-	
-	@Override
-    public Map<String, Object> getProperties() {
-        final Map<String, Object> properties = new HashMap<String, Object>();
-        properties.put("jersey.config.server.provider.packages",
-                       "com.multiplan.catalog.rest.service");
-        return properties;
-    }
-}
-*/

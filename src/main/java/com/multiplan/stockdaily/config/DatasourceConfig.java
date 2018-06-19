@@ -1,8 +1,6 @@
 package com.multiplan.stockdaily.config;
 
-import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
@@ -11,6 +9,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.scheduling.concurrent.DefaultManagedTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -50,6 +49,13 @@ public class DatasourceConfig {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("stockdaily");
 		EntityManager em = emf.createEntityManager();
 		return em;
+	}
+	*/
+	
+	/*
+	@Bean
+	public DefaultManagedTaskExecutor getDefaultManagedTaskExecutor() {
+		return new DefaultManagedTaskExecutor();
 	}
 	*/
 }
