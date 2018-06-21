@@ -1,6 +1,7 @@
 <configuration>
+	<property resource="application.properties" />
     <appender name="STASH-C" class="net.logstash.logback.appender.LogstashAccessTcpSocketAppender">
-        <destination>173.255.221.238:5001</destination>
+        <destination>${spring.logstashHost}</destination>
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
         	<customFields>{"loglevel":"level"}</customFields>
         </encoder>
