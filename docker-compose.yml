@@ -1,7 +1,5 @@
 stockdailypriceservice:
   image: services/stockdailypriceservice
-  links:
-    - rabbitmq
   ports:
     #  local : container expose
     - "8080:8080"
