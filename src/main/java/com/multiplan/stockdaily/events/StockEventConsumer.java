@@ -78,7 +78,7 @@ public class StockEventConsumer {
 			price.setSecurity(security);
 			security.getSecurityPrices().add(price);
 			
-			LOGGER.info("securityType id "+ securityType.getId());
+			LOGGER.debug("securityType id "+ securityType.getId());
 			securityService.saveSecurity(security);
 			
 		} catch (Throwable e) {

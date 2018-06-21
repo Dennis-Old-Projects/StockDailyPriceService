@@ -1,30 +1,12 @@
 <configuration>
     <appender name="STASH-C" class="net.logstash.logback.appender.LogstashAccessTcpSocketAppender">
-        <destination>173.255.221.238:5000</destination>
-        <encoder class="net.logstash.logback.encoder.LogstashAccessEncoder" />
+        <destination>173.255.221.238:5001</destination>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+        	<customFields>{"loglevel":"level"}</customFields>
+        </encoder>
         <keepAliveDuration>5 minutes</keepAliveDuration>
     </appender>
-  <appender name="STASH-B" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
-    <destination>173.255.221.238:5000</destination>
-    <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder" >
-        <providers>
-            <timestamp/>
-            <version/>
-            <loggerName/>
-            <pattern>
-                <pattern>
-                    {
-                    "custom_constant": "cfg",
-                    "level": "%level",
-                    "thread": "%thread",
-                    "message": "%message"
-                    }
-                </pattern>
-            </pattern>
-         </providers>
-    </encoder>
-    <keepAliveDuration>5 minutes</keepAliveDuration>
-  </appender>
+  
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <!-- encoders are assigned the type ch.qos.logback.classic.encoder.PatternLayoutEncoder 
       by default -->
@@ -33,13 +15,13 @@
       </pattern>
     </encoder>
   </appender>
-  <logger name="com.gw.test" level="INFO" />
+
   <logger name="org.springframework" level="INFO" />
-  <logger name="com.netflix.astyanax" level="INFO" />
+  <logger name="com.multiplan" level="INFO" />
 
   <root level="DEBUG">
-    <appender-ref ref="STASH-B" />
     <appender-ref ref="STASH-C" />
     <appender-ref ref="STDOUT" />
   </root>
+  
 </configuration>
