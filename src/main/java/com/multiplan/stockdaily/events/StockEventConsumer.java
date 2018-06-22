@@ -82,6 +82,7 @@ public class StockEventConsumer {
 			securityService.saveSecurity(security);
 			
 		} catch (Throwable e) {
+			LOGGER.error(e.getMessage(), e);
 			e.printStackTrace();
 		}
 	}
