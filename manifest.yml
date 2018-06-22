@@ -1,7 +1,7 @@
 ---
 applications:
 - name: StockDailyPriceService
-  memory: 256M
+  memory: 1G
   instances: 1
   path: target/StockDailyPriceService.war
   env:
