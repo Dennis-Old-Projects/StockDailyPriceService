@@ -4,5 +4,3 @@ applications:
   memory: 1G
   instances: 1
   path: target/StockDailyPriceService.war
-  env:
-    JBP_CONFIG_OPEN_JDK_MEMORY_CALCULATOR: "[memory_sizes: {metaspace: 128m}]"
