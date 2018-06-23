@@ -26,6 +26,10 @@ public class Security {
     @JoinColumn(name = "SECURITY_TYPE")
 	private SecurityType securityType;
 	
+	@ManyToOne
+    @JoinColumn(name = "SECURITY_SECTOR")
+	private SecuritySector securitySector;
+	
 	@OneToMany(mappedBy = "security", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private Set<SecurityPrice> securityPrices;
 	
@@ -63,6 +67,12 @@ public class Security {
 	}
 	public void setSecurityPrices(Set<SecurityPrice> securityPrices) {
 		this.securityPrices = securityPrices;
+	}
+	public SecuritySector getSecuritySector() {
+		return securitySector;
+	}
+	public void setSecuritySector(SecuritySector securitySector) {
+		this.securitySector = securitySector;
 	}
 	
 	

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.multiplan.stockdaily.dao.entity.Security;
 import com.multiplan.stockdaily.dao.entity.SecurityPrice;
+import com.multiplan.stockdaily.dao.entity.SecuritySector;
 import com.multiplan.stockdaily.dao.entity.SecurityType;
 import com.multiplan.stockdaily.rest.resource.StockPrice;
 import com.multiplan.stockdaily.rest.util.RestServiceUtils;
@@ -70,6 +71,14 @@ public class StockEventConsumer {
 			SecurityType securityType = new SecurityType();
 			securityType.setId(Integer.valueOf(1));			
 			security.setSecurityType(securityType);
+			
+			SecuritySector sector = securityService.getSecuritySector(sp.getSector());
+			if (sector == null) {
+				sector = new SecuritySector();
+				sector.setName(sp.getSector());
+				securityService.saveSecuritySector(sector);
+			}
+			security.setSecuritySector(sector);
 			
 			SecurityPrice price = new SecurityPrice();
 			price.setAdjClose(Double.valueOf(stockprice.getAdjClose()));
